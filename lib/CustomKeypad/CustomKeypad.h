@@ -3,4 +3,6 @@
 
 #include <Keypad.h>
 
+extern Keypad keypad;
+
 #endif

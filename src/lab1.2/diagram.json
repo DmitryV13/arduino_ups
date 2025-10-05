@@ -16,7 +16,7 @@
       "type": "wokwi-membrane-keypad",
       "id": "keypad2",
       "top": -357.2,
-      "left": -253.6,
+      "left": -272.8,
       "attrs": {}
     },
     {
@@ -46,7 +46,8 @@
       "top": -101.65,
       "left": 288,
       "attrs": { "value": "220" }
-    }
+    },
+    { "type": "wokwi-potentiometer", "id": "pot1", "top": -490.9, "left": -19.4, "attrs": {} }
   ],
   "connections": [
     [ "keypad2:R1", "mega:A0", "orange", [ "v230.4", "h362.1" ] ],
@@ -87,18 +88,21 @@
     [ "bb1:13t.e", "bb1:13b.f", "green", [ "v0" ] ],
     [ "bb1:14t.e", "bb1:14b.f", "blue", [ "v0" ] ],
     [ "bb1:15t.e", "bb1:15b.f", "orange", [ "v0" ] ],
+    [ "bb1:21t.e", "bb1:21b.f", "black", [ "v0" ] ],
+    [ "bb1:22t.e", "resRed:1", "#8f4814", [ "v0" ] ],
+    [ "bb1:23t.e", "bb1:23b.f", "black", [ "v0" ] ],
+    [ "bb1:24t.e", "bb1:24b.f", "blue", [ "v0" ] ],
     [ "ledRed:A", "bb1:22t.d", "", [ "$bb" ] ],
     [ "ledRed:C", "bb1:21t.d", "", [ "$bb" ] ],
+    [ "ledGreen:A", "bb1:24t.d", "", [ "$bb" ] ],
+    [ "ledGreen:C", "bb1:23t.d", "", [ "$bb" ] ],
     [ "resRed:1", "bb1:22b.f", "", [ "$bb" ] ],
     [ "resRed:2", "bb1:28b.f", "", [ "$bb" ] ],
     [ "resGreen:1", "bb1:24b.h", "", [ "$bb" ] ],
     [ "resGreen:2", "bb1:30b.h", "", [ "$bb" ] ],
-    [ "ledGreen:A", "bb1:24t.d", "", [ "$bb" ] ],
-    [ "ledGreen:C", "bb1:23t.d", "", [ "$bb" ] ],
-    [ "bb1:21t.e", "bb1:21b.f", "black", [ "v0" ] ],
-    [ "bb1:22t.e", "resRed:1", "#8f4814", [ "v0" ] ],
-    [ "bb1:23t.e", "bb1:23b.f", "black", [ "v0" ] ],
-    [ "bb1:24t.e", "bb1:24b.f", "blue", [ "v0" ] ]
+    [ "pot1:GND", "bb1:tn.1", "black", [ "v211.2" ] ],
+    [ "lcd1:V0", "pot1:SIG", "green", [ "v19.2", "h-0.3" ] ],
+    [ "pot1:VCC", "bb1:tp.1", "red", [ "v0" ] ]
   ],
   "dependencies": {}
 }
