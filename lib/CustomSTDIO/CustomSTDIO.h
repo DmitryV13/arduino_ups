@@ -4,6 +4,6 @@
 #include <Arduino.h>
 #include <stdio.h>
 
-void StdioSerialInit(void);
+void StdioSerialSetup(void);
 
 #endif

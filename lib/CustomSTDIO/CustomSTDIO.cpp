@@ -13,7 +13,7 @@ static int GetChar(FILE *f)
     return Serial.read();
 }
 
-void StdioSerialInit(void)
+void StdioSerialSetup(void)
 {
     Serial.begin(9600);
     StdioStream = fdevopen(PutChar, GetChar);

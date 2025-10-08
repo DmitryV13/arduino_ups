@@ -4,56 +4,69 @@ const char correctCode[] = "1234";
 char inputCode[5];
 int codeIndex = 0;
 
-void lab12_setup() {
-  StdioSerialInit();
-  lcdInit();
-  ledsInit();
+void lab12Setup() {
+  StdioSerialSetup();
+  lcdSetup();
+
+  pinMode(RED_LED, OUTPUT);
+  pinMode(GREEN_LED, OUTPUT);
+  
+  ledOff(RED_LED);
+  ledOff(GREEN_LED);
 }
 
-void lab12_loop() {
-  char key = keypad.getKey();
+void showMessage(char* msg) {
+    clearScreen();
+    lcdPrint(msg);
+}
 
-  if (key) {
-    printf("[KEYPAD] Pressed key: %c\n", key);
+void resetInput() {
+    codeIndex = 0;
+    clearScreen();
+    lcdPrint("Enter Code:");
+}
 
-    if (isdigit(key)) {
-      if (codeIndex < 4) {
-        inputCode[codeIndex++] = key;
-        lcd.setCursor(codeIndex - 1, 1);
-        lcd.print("*");
-      }
-    }
-
-    if (key == '#') {
-      inputCode[codeIndex] = '\0';
-
-      lcd.setCursor(0, 1);
-      lcd.print("                ");
-      lcd.setCursor(0, 1);
-
-      if (strcmp(inputCode, correctCode) == 0) {
-        lcd.print("Access Granted");
-        printf("[SYSTEM] Correct code entered\n");
-        setAccessLED(true);
-      } else {
-        lcd.print("Access Denied ");
-        printf("[SYSTEM] Wrong code entered: %s\n", inputCode);
-        setAccessLED(false);
-      }
-
-      codeIndex = 0;
-      delay(2000);
-      lcd.clear();
-      lcd.print("Enter Code:");
-    }
-
-    if (key == '*') {
-      codeIndex = 0;
-      lcd.setCursor(0, 1);
-      lcd.print("                ");
-      printf("[SYSTEM] Code cleared\n");
-    }
+void setAccessLED(bool granted) {
+  if(granted) {
+    ledOn(GREEN_LED);
+    ledOff(RED_LED);
+  } else {
+    ledOff(GREEN_LED);
+    ledOn(RED_LED);
   }
 }
 
+void lab12Loop() {
+    char key = keypad.getKey();
+    if (!key) return;
 
+    printf("[KEYPAD] Pressed key: %c\n", key);
+
+    if (isdigit(key) && codeIndex < 4) {
+        inputCode[codeIndex++] = key;
+        lcdSetCursor(codeIndex - 1, 1);
+        lcdPrint("*");
+    }
+
+    if (key == '#') {
+        inputCode[codeIndex] = '\0';
+
+        if (strcmp(inputCode, correctCode) == 0) {
+            showMessage("Access Granted");
+            printf("[SYSTEM] Correct code entered\n");
+            setAccessLED(true);
+        } else {
+            showMessage("Access Denied");
+            printf("[SYSTEM] Wrong code: %s\n", inputCode);
+            setAccessLED(false);
+        }
+
+        delay(2000);
+        resetInput();
+    }
+
+    if (key == '*') {
+        printf("[SYSTEM] Code cleared\n");
+        resetInput();
+    }
+}

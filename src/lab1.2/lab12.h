@@ -5,12 +5,15 @@
 #include "CustomSTDIO.h"
 #include "../CustomKeypad/CustomKeypad.h"
 #include "../LCDDisplay/LCDDisplay.h"
-#include "../LEDController/LEDController.h"
+#include "../LED/DriverLed.h"
 #include <ctype.h>
 #include <string.h>
 #include <stdio.h>
 
-void lab12_setup();
-void lab12_loop();
+#define RED_LED 3
+#define GREEN_LED 2
+
+void lab12Setup();
+void lab12Loop();
 
 #endif

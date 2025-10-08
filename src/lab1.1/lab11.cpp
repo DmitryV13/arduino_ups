@@ -1,16 +1,16 @@
 #include "lab11.h"
 
-void lab11_setup(void)
+void lab11Setup(void)
 {
-    StdioSerialInit();
-
+    StdioSerialSetup();
     pinMode(LED_PIN, OUTPUT);
-    digitalWrite(LED_PIN, LOW);
+    
+    ledOff(LED_PIN);
 
     printf("System ready. Available commands: 'led on', 'led off'.\n");
 }
 
-void lab11_loop(void)
+void lab11Loop(void)
 {
     char buffer[32];
 
@@ -23,12 +23,12 @@ void lab11_loop(void)
 
     if (strcmp(buffer, "led on") == 0)
     {
-        digitalWrite(LED_PIN, HIGH);
+        ledOn(LED_PIN);
         printf("LED is ON\n");
     }
     else if (strcmp(buffer, "led off") == 0)
     {
-        digitalWrite(LED_PIN, LOW);
+        ledOff(LED_PIN);
         printf("LED is OFF\n");
     }
     else

@@ -5,6 +5,9 @@
 
 extern LiquidCrystal lcd;
 
-void lcdInit();
+void lcdSetup();
+void clearScreen();
+void lcdPrint(char* str);
+void lcdSetCursor(int i, int j);
 
 #endif

@@ -3,11 +3,12 @@
 
 #include <Arduino.h>
 #include "../CustomSTDIO/CustomSTDIO.h"
+#include "../LED/DriverLed.h"
 #include <string.h>
 
 #define LED_PIN 7
 
-void lab11_setup(void);
-void lab11_loop(void);
+void lab11Setup(void);
+void lab11Loop(void);
 
 #endif
