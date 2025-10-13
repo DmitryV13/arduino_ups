@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "author": "Максим Боев",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-breadboard-half", "id": "bb1", "top": -233.4, "left": 41.2, "attrs": {} },
+    { "type": "wokwi-arduino-mega", "id": "mega", "top": 0.6, "left": -3.6, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "ledRed",
+      "top": -195.6,
+      "left": 243.8,
+      "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "ledGreen",
+      "top": -195.6,
+      "left": 263,
+      "attrs": { "color": "green" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "resRed",
+      "top": -120.85,
+      "left": 268.8,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "resGreen",
+      "top": -101.65,
+      "left": 288,
+      "attrs": { "value": "220" }
+    },
+    {
+      "type": "wokwi-pushbutton-6mm",
+      "id": "btn2",
+      "top": -155.8,
+      "left": 9.6,
+      "attrs": { "color": "green", "xray": "1" }
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrasonic1",
+      "top": -344.1,
+      "left": 34.3,
+      "attrs": { "distance": "400" }
+    },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": -390.9, "left": 247, "attrs": {} }
+  ],
+  "connections": [
+    [ "bb1:tp.25", "mega:5V", "red", [ "v0.3", "h97.6", "v547.2", "h-278.4" ] ],
+    [ "bb1:tn.25", "mega:GND.2", "black", [ "v-0.1", "h78.4", "v528", "h-249.6" ] ],
+    [ "bb1:21b.j", "bb1:bn.17", "black", [ "v0" ] ],
+    [ "bb1:23b.j", "bb1:bn.19", "black", [ "v0" ] ],
+    [ "bb1:28b.j", "mega:3", "#8f4814", [ "v57.6", "h-96" ] ],
+    [ "bb1:30b.j", "mega:2", "blue", [ "v67.2", "h-115.2" ] ],
+    [ "bb1:5t.e", "bb1:5b.f", "blue", [ "v0" ] ],
+    [ "bb1:21t.e", "bb1:21b.f", "black", [ "v0" ] ],
+    [ "bb1:22t.e", "resRed:1", "#8f4814", [ "v0" ] ],
+    [ "bb1:23t.e", "bb1:23b.f", "black", [ "v0" ] ],
+    [ "bb1:24t.e", "bb1:24b.f", "blue", [ "v0" ] ],
+    [ "bb1:bn.3", "mega:GND.1", "black", [ "v46.7", "h24.6" ] ],
+    [ "bb1:5b.j", "mega:13", "blue", [ "v76.8", "h19.2" ] ],
+    [ "btn2:2.l", "bb1:bn.1", "black", [ "h0", "v86.8" ] ],
+    [ "btn2:1.r", "bb1:5t.d", "blue", [ "v0" ] ],
+    [ "bb1:6b.j", "mega:12", "green", [ "v67.2", "h19.2" ] ],
+    [ "bb1:7b.j", "mega:11", "orange", [ "v57.6", "h19.2" ] ],
+    [ "ledRed:A", "bb1:22t.d", "", [ "$bb" ] ],
+    [ "ledRed:C", "bb1:21t.d", "", [ "$bb" ] ],
+    [ "ledGreen:A", "bb1:24t.d", "", [ "$bb" ] ],
+    [ "ledGreen:C", "bb1:23t.d", "", [ "$bb" ] ],
+    [ "resRed:1", "bb1:22b.f", "", [ "$bb" ] ],
+    [ "resRed:2", "bb1:28b.f", "", [ "$bb" ] ],
+    [ "resGreen:1", "bb1:24b.h", "", [ "$bb" ] ],
+    [ "resGreen:2", "bb1:30b.h", "", [ "$bb" ] ],
+    [ "gas1:VCC", "bb1:tp.23", "red", [ "h38.4", "v85.5", "h-97.6" ] ],
+    [ "gas1:GND", "bb1:tn.22", "black", [ "h28.8", "v85.6", "h-96" ] ],
+    [ "bb1:6t.e", "bb1:6b.f", "green", [ "v0" ] ],
+    [ "bb1:7t.e", "bb1:7b.f", "orange", [ "v0" ] ],
+    [ "ultrasonic1:VCC", "bb1:tp.4", "red", [ "v0" ] ],
+    [ "ultrasonic1:TRIG", "bb1:6t.a", "green", [ "v0" ] ],
+    [ "ultrasonic1:ECHO", "bb1:7t.a", "orange", [ "v0" ] ],
+    [ "ultrasonic1:GND", "bb1:tn.6", "black", [ "v0" ] ],
+    [ "gas1:AOUT", "mega:A0", "violet", [ "h76.8", "v604.8", "h-255.9" ] ]
+  ],
+  "dependencies": {}
+}
