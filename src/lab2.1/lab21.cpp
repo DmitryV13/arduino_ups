@@ -1,55 +1,30 @@
-#include <Arduino.h>
-#include <LiquidCrystal.h>
-#include <stdio.h>
 #include "lab21.h"
 
-#define BUTTON_TASK1 9
-#define BUTTON_INC 10
-#define BUTTON_DEC 11
-
-#define LED_DEPENDENT 3
-#define LED_BLINKING 2
-
-
-#define TIME_SEC 1000
-#define SYSTEM_TICK 1
-
-#define TASK_1_OFFSET (TIME_SEC * 1) / SYSTEM_TICK
-#define TASK_1_RECCURENCY (TIME_SEC / 20) / SYSTEM_TICK
 int task1Counter = TASK_1_OFFSET;
 
-#define TASK_2_OFFSET (TIME_SEC * 2) / SYSTEM_TICK
-int task2Reccurency = (TIME_SEC / 2) / SYSTEM_TICK;
+//to control reccurency
 const byte additionalReccurency = 100;
+int task2Reccurency = (TIME_SEC / 2) / SYSTEM_TICK;
 int task2Counter = TASK_2_OFFSET;
 
-#define TASK_3_OFFSET (TIME_SEC * 2) / SYSTEM_TICK
-#define TASK_3_RECCURENCY (TIME_SEC / 20) / SYSTEM_TICK
 int task3Counter = TASK_3_OFFSET;
 
 unsigned long lastTick = 0;
-
-
-// LiquidCrystal lcd(13, 12, 7, 6, 5, 4);
 
 void taskIdle();
 void taskLedPushButton();
 void taskLedBlink();
 void taskIncDecPushButton();
 
-
-
 byte redLedState = LOW;
 byte greenLedState = LOW;
 
-byte previousButtonState = HIGH;
-byte currentButtonState = HIGH;
-
 boolean systemHasChanges = true;
 
-void lab21Setup() {
+void lab21Setup() 
+{
   StdioSerialSetup();
-//   lcd.begin(16, 2);
+  buttonsSetup();
 
   pinMode(BUTTON_TASK1, INPUT_PULLUP);
   pinMode(BUTTON_INC, INPUT_PULLUP);
@@ -60,8 +35,11 @@ void lab21Setup() {
 
 }
 
-void lab21Loop() {
-  if (millis() - lastTick >= 1) {
+void lab21Loop() 
+{
+  //to control frequency and this adds meaning to count
+  if (millis() - lastTick >= 1) 
+  {
 
     if(--task1Counter <= 0){
       taskLedPushButton();
@@ -84,25 +62,27 @@ void lab21Loop() {
   }
 }
 
-void taskLedPushButton() {
-    previousButtonState = currentButtonState;
-    currentButtonState = digitalRead(BUTTON_TASK1);
-    if (currentButtonState == LOW && currentButtonState != previousButtonState) {
+void taskLedPushButton() 
+{
+    if (isButtonPressed(BUTTON_TASK1)) 
+    {
       redLedState = !redLedState;
-      digitalWrite(LED_DEPENDENT, redLedState);
+      changeLedState(LED_DEPENDENT, redLedState);
 
       systemHasChanges = true;
     }
 }
 
-void taskIncDecPushButton() {
-    if(redLedState == LOW){
+void taskIncDecPushButton() 
+{
+  //edge values set blinking in visible range
+    if(redLedState == LOW)
+    {
       if (digitalRead(BUTTON_INC) == LOW) {
         task2Reccurency += additionalReccurency;
         if (task2Reccurency > 10000) {
           task2Reccurency = 10000;
         }
-        // lcdPrint("Decrease ferq.");
         systemHasChanges = true;
       }
       if (digitalRead(BUTTON_DEC) == LOW) {
@@ -110,26 +90,28 @@ void taskIncDecPushButton() {
         if (task2Reccurency < 50) {
           task2Reccurency = 50;
         }
-        // lcdPrint("Increase ferq.");
         systemHasChanges = true;
       }
     }
 }
 
-void taskLedBlink() {
-  if(redLedState == LOW){
+void taskLedBlink() 
+{
+    if(redLedState == LOW)
+    {
       if (digitalRead(LED_BLINKING) == LOW) {
-        digitalWrite(LED_BLINKING, HIGH);
+        ledOn(LED_BLINKING);
       }
       else{
-        digitalWrite(LED_BLINKING, LOW);
+        ledOff(LED_BLINKING);
       }
     }else{
-        digitalWrite(LED_BLINKING, LOW);
+        ledOff(LED_BLINKING);
     }
 }
 
-void taskIdle() {
+void taskIdle() 
+{
     if(systemHasChanges)
     {
       const char* ledStatus = (redLedState == LOW) ? "off" : "on";
@@ -151,10 +133,3 @@ void taskIdle() {
     }
     //delay(10);
 }
-
-
-// void lcdPrint(char* str){
-//   lcd.clear();
-//   lcd.setCursor(0, 0);
-//   lcd.print(str); 
-// }

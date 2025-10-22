@@ -1,13 +1,14 @@
-// #ifndef LCDDISPLAY_H
-// #define LCDDISPLAY_H
+#ifndef LCDDISPLAY_H
+#define LCDDISPLAY_H
 
-// #include <LiquidCrystal.h>
+#include <LiquidCrystal.h>
 
-// extern LiquidCrystal lcd;
+extern LiquidCrystal lcd;
 
-// void lcdSetup();
-// void clearScreen();
-// void lcdPrint(char* str);
-// void lcdSetCursor(int i, int j);
+void lcdSetup();
+void clearScreen();
+void lcdPrint(const char* str);
+void lcdPrint(const String &str);
+void lcdSetCursor(int i, int j);
 
-// #endif
+#endif

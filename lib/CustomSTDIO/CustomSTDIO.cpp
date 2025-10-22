@@ -20,3 +20,17 @@ void StdioSerialSetup(void)
     stdin  = StdioStream;
     stdout = StdioStream;
 }
+
+void printFloat(const char* label, float value, const char* suffix) {
+  char buf[24];
+  dtostrf(value, 0, 2, buf);// 2 signs after ,
+  printf("%s%s%s\r\n", label, buf, suffix);
+}
+
+bool stdioHasData(){
+    return Serial.available() > 0;
+}
+
+String stdioGetString(){
+    return Serial.readStringUntil('\n');
+}

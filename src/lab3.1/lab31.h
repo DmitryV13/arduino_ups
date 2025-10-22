@@ -15,8 +15,8 @@
 #define LED_RED_PIN 3
 #define LED_GREEN_PIN 2
 
-#define PIN_TRIG 12
-#define PIN_ECHO 11
+#define PIN_TRIG 10
+#define PIN_ECHO 8
 #define MQ2_PIN A0
 
 extern int gasSensorAnalogValue;

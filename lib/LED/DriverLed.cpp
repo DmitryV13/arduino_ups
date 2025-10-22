@@ -14,3 +14,8 @@ void ledOff(int pin)
 {
     digitalWrite(pin, LOW);
 }
+
+void changeLedState(int pin, byte state)
+{
+    digitalWrite(pin, state);
+}
