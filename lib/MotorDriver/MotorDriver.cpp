@@ -4,6 +4,8 @@ int motorEnablePin = 0;
 int motorPin1 = 0;
 int motorPin2 = 0;
 
+int currentSpeed = 0;
+
 void motorSetup(int mep, int mp1, int mp2){
     motorEnablePin = mep;
     motorPin1 = mp1;
@@ -23,6 +25,11 @@ void setSpeed(int speed){
         int dir = speed > 0 ? HIGH : LOW;
         digitalWrite(motorPin1, !dir);
         digitalWrite(motorPin2, dir);
+        currentSpeed = abs(speed);
         analogWrite(motorEnablePin, abs(speed)); // Set speed
     }
+}
+
+int getSpeed(){
+    return currentSpeed;
 }
