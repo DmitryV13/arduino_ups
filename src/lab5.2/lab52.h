@@ -5,7 +5,9 @@
 #include "../CustomSTDIO/CustomSTDIO.h"
 #include "../LCDDisplay/LCDDisplay.h"
 #include "../MotorDriver/MotorDriver.h"
+#include "../PID/PID.h"
 
+// Constants for Motor Driver
 // Enable pin for PWM speed control
 #define  MOTOR_ENABLE_PIN 6
 // Input 1 for direction

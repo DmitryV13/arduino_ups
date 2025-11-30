@@ -5,6 +5,8 @@
 
 void motorSetup(int mep, int mp1, int mp2);
 void setSpeed(int speed);
+void setAbsoluteSpeed(int speed);
 int getSpeed();
+void motorTurnOff();
 
 #endif

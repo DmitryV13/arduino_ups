@@ -23,6 +23,11 @@ void lcdPrint(const String &str)
   lcd.print(str);
 }
 
+void lcdPrint(double v, int f)
+{
+  lcd.print(v, f);
+}
+
 void lcdSetCursor(int i, int j)
 {
   lcd.setCursor(i, j);

@@ -8,5 +8,6 @@ extern uint8_t currentButtonStates[20];
 
 void buttonsSetup();
 bool isButtonPressed(int pin);
+int getCurrentButtonState(int pin);
 
 #endif

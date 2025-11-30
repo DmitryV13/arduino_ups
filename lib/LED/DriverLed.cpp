@@ -3,6 +3,7 @@
 
 void ledSetup(int pin)
 {
+    pinMode(pin, OUTPUT);
 }
 
 void ledOn(int pin)

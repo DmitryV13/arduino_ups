@@ -1,14 +1,6 @@
 #include "lab52.h"
 
-// Constants for Motor Driver
-const int motorEnablePin = 6; // Enable pin for PWM speed control
-const int motorPin1 = 5;      // Input 1 for direction
-const int motorPin2 = 4;      // Input 2 for direction
-
-// PID parameters
-float kp = 0.3;
-float td = 0.0;
-float ti = 90.0;
+const int encoderPin = 3;
 
 // Error array
 int error[3] = {0, 0, 0};
@@ -17,13 +9,18 @@ int u[2] = {0, 0};
 // delay
 int T = 10;
 
-const float MAX_RPM = 3000.0;
+const float MAX_RPM = 350.0;
 float realSpeedRpm = 0;
+int lastState = 0;
+const int PULSES_PER_REV = 20;
+
+volatile unsigned long pulseCount = 0;
 
 int sat(int s, int lb, int ub);
 int pidAntiWindUp(int e0, int e1, int e2, int u1, int lb, int ub, float T);
 float getMotorRPM();
 void processCommands2();
+void encoderISR();
 
 void lab52Setup()
 {
@@ -31,6 +28,10 @@ void lab52Setup()
     lcdPrint("System Ready");
 
     motorSetup(MOTOR_ENABLE_PIN, MOTOR_PIN1, MOTOR_PIN2);
+
+    pinMode(encoderPin, INPUT);
+    lastState = digitalRead(encoderPin);
+    attachInterrupt(digitalPinToInterrupt(encoderPin), encoderISR, RISING);
 }
 
 void lab52Loop()
@@ -42,8 +43,10 @@ void lab52Loop()
     // PID control calculations
     error[0] = setpoint - realSpeedRpm; // first error
     u[0] = pidAntiWindUp(error[0], error[1], error[2], u[1], 0, 255, T);
+    lcdSetCursor(0, 0);
     lcdPrint("PID:" + String(u[0]));
-    analogWrite(motorEnablePin, u[0]);
+    lcd.print("        ");
+    setAbsoluteSpeed(u[0]);
 
     error[1] = error[0]; // Shifting operation
     error[2] = error[1]; // Shifting operation
@@ -53,18 +56,15 @@ void lab52Loop()
 
 void controlMotor1(int speed)
 {
+    setSpeed(speed);
     if (speed == 0)
     {
-        digitalWrite(motorEnablePin, LOW); // Turn motor off
+        motorTurnOff();
         lcdSetCursor(0, 1);
         lcdPrint("Motor is OFF     ");
     }
     else
     {
-        int dir = speed > 0 ? HIGH : LOW;
-        digitalWrite(motorPin1, !dir);
-        digitalWrite(motorPin2, dir);
-        analogWrite(motorEnablePin, abs(speed)); // Set speed
         lcdSetCursor(0, 1);
         lcdPrint("Motor Speed:" + String(speed));
     }
@@ -89,39 +89,32 @@ void processCommands2()
         }
         else if (command.startsWith("kp "))
         {
-            kp = command.substring(3).toFloat();
+            setKp(command.substring(3).toFloat());
         }
         else if (command.startsWith("ti "))
         {
-            ti = command.substring(3).toFloat();
+            setTi(command.substring(3).toFloat());
         }
         else if (command.startsWith("td "))
         {
-            td = command.substring(3).toFloat();
+            setTd(command.substring(3).toFloat());
         }
     }
 }
 
-int pidAntiWindUp(int e0, int e1, int e2, int u1, int lb, int ub, float T)
-{
-    T = T / 1000;                                                              // Conversion from ms to s
-    float v = sat(u1, lb, ub) - u1;  // разница между ограниченным и рассчитанным сигналом
-    float u = u1 + kp * (e0 - e1 + T / ti * e0 + td / T * (e0 - 2 * e1 + e2)) + (T/ti) * v;
-    u = sat(u, lb, ub);                                                        // Saturation difference
-    return u;
-}
-
-// Saturation function
-int sat(int s, int lb, int ub)
-{
-    if (s >= ub)
-        return ub;
-    if (s <= lb)
-        return lb;
-    return s;
-}
-
 float getMotorRPM()
 {
-    return 0.0;
+    static unsigned long lastCount = 0;
+    static float rpm = 0;
+
+    unsigned long count = pulseCount - lastCount;
+    lastCount = pulseCount;
+
+    rpm = (count / float(PULSES_PER_REV)) * (60.0 / (T / 1000.0)); // T = задержка цикла
+    return rpm;
+}
+
+void encoderISR()
+{
+    pulseCount++;
 }

@@ -2,7 +2,7 @@
 
 int relayPin = 0;
 
-void relaySetup(int rp, int mp1, int mp2){
+void relaySetup(int rp){
     relayPin = rp;
     pinMode(relayPin, OUTPUT);
     digitalWrite(relayPin, LOW);

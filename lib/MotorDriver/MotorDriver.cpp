@@ -6,7 +6,8 @@ int motorPin2 = 0;
 
 int currentSpeed = 0;
 
-void motorSetup(int mep, int mp1, int mp2){
+void motorSetup(int mep, int mp1, int mp2)
+{
     motorEnablePin = mep;
     motorPin1 = mp1;
     motorPin2 = mp2;
@@ -15,13 +16,17 @@ void motorSetup(int mep, int mp1, int mp2){
     pinMode(motorEnablePin, OUTPUT);
     pinMode(motorPin1, OUTPUT);
     pinMode(motorPin2, OUTPUT);
-    digitalWrite(motorEnablePin, LOW);  // Start with the motor off
+    digitalWrite(motorEnablePin, LOW); // Start with the motor off
 }
 
-void setSpeed(int speed){
-    if (speed == 0) {
+void setSpeed(int speed)
+{
+    if (speed == 0)
+    {
         digitalWrite(motorEnablePin, LOW); // Turn motor off
-    } else {
+    }
+    else
+    {
         int dir = speed > 0 ? HIGH : LOW;
         digitalWrite(motorPin1, !dir);
         digitalWrite(motorPin2, dir);
@@ -30,6 +35,17 @@ void setSpeed(int speed){
     }
 }
 
-int getSpeed(){
+void setAbsoluteSpeed(int speed)
+{
+    analogWrite(motorEnablePin, speed);
+}
+
+int getSpeed()
+{
     return currentSpeed;
+}
+
+void motorTurnOff()
+{
+    digitalWrite(motorEnablePin, LOW);
 }
